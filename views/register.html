@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>회원가입</h1>
+    <form action="" class="register-form">
+        <div>
+            <label for="user_id">user_id</label>
+            <input type="text" id="user_id" autocomplete="off" required>
+        </div>
+        <div>
+            <label for="user_pwd">user_pwd</label>
+            <input type="password" id="user_pwd">
+        </div>
+        <div>
+            <button class="submit">전송</button>
+        </div>
+    </form>
+
+    <script>
+        const registerForm = document.querySelector(".register-form");
+        registerForm.addEventListener('submit', (event)=>{
+            event.preventDefault(); // 화면 갱신 방지
+
+            fetch('http://localhost:3000/register', {
+                method: 'POST',
+                body:JSON.stringify({
+                    user_id : user_id.value,
+                    user_pwd : user_pwd.value
+                }),
+                headers:{ 'content-type' : 'application/json;charset=utf-8'}
+            }).then( res=>res.json())
+            .then( res=>{
+                // 처리
+                if( res.success==='ok' ){
+                    location.href= "http://localhost:3000/login";
+                    // 회원가입하고 로그인하도록 유도
+                   // <a href= "http://localhost:3000 >
+                }
+            })
+        })
+    </script>
+</body>
+</html>

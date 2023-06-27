@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>index</h1>
+    <div class="log">
+        <span></span>
+        <button class="logout">로그아웃</button>
+    </div>
+    <script>
+        window.addEventListener('DOMContentLoaded', ()=>{
+            const log = document.querySelector(".log");
+            // 로그인이 되어 있는 상태에서 log 표시
+            // 로그인이 되어 있지 않은 상태에서 로그인 이동
+            const user = localStorage.getItem('user');
+
+            if( !user ){
+                log.style.display = 'none';
+                //location.href = 'http://localhost:3000/login'
+            }else{
+                log.style.display = 'block';
+                document.querySelector(".log>span").innerHTML = user;
+            }
+        })
+
+        // logout 할 수 있으므로 
+        document.querySelector('.logout').addEventListener('click', ()=>{
+            document.querySelector('.log').style.display = "none";
+            document.querySelector('.log>span').innerHTML = "";
+            localStorage.removeItem('user');//
+        })
+    </script>
+</body>
+</html>
+<!-- 
+    cookie
+    session
+    jwt
+    json => db(monodb, mariadb)
+    MVC
+ -->

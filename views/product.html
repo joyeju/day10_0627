@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>product / 장바구니</h1>
+    <div class="log">
+        <span></span>
+        <button class="logout">로그아웃</button>
+    </div>
+    <div class="product_list">
+        <ul>
+
+        </ul>
+    </div>
+    <script>
+        let movies = [];
+        let products = [];
+
+        window.addEventListener('DOMContentLoaded', ()=>{
+            const log = document.querySelector(".log");
+            // 로그인이 되어 있는 상태에서 log 표시
+            // 로그인이 되어 있지 않은 상태에서 로그인 이동
+            const user = localStorage.getItem('user');
+
+            if( !user ){
+                log.style.display = 'none';
+                location.href = 'http://localhost:3000/login'
+            }else{
+                log.style.display = 'block';
+                document.querySelector(".log>span").innerHTML = user;
+                // 장바구니에 담긴 정보를 가져와서 화면에 표시
+
+                // fetch('https://yts.mx/api/v2/list_movies.json')
+                // .then(res=>res.json())
+                // .then(res=>{
+                //     console.log(res.data.movies);
+                //     movies = [...res.data.movies];
+                //     loadMoves();
+                // })
+
+                fetch('/product/product.json')
+                // fetch('../model/product.json') // liveServer로 실행했을 때 
+                .then(res=>res.json())
+                .then(res=>{
+                    console.log(res);
+                    products = [...res];
+                    loadProducts();
+                })
+            }
+        })
+
+        function loadProducts(){
+            const list = document.querySelector('.product_list ul');
+            products.map(data=>{
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <input type="checkbox" id="checkbox" checked="${data.checked}"> 
+                    <span>${data.id}</span>
+                    <span>${data.subject}</span>
+                    <span>${data.validate}</span>
+                `
+                list.append(li)
+            })
+        }
+
+        function loadMoves(){
+            const list = document.querySelector('.product_list ul');
+            movies.map(data=>{
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <span>${data.title}</span>
+                    <span>${data.summary}</span>
+                    <span>${data.rating}</span>
+                `
+                list.append(li)
+            })
+        }
+        // logout 할 수 있으므로 
+        document.querySelector('.logout').addEventListener('click', ()=>{
+            document.querySelector('.log').style.display = "none";
+            document.querySelector('.log>span').innerHTML = "";
+            localStorage.removeItem('user');//
+            document.querySelector('.product_list ul').innerHTML = "";
+        })
+    </script>
+</body>
+</html>
+ 
